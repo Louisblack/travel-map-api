@@ -10,7 +10,7 @@ jobs:
     - name: Use Graal
       uses: DeLaGuardo/setup-graalvm@2.0
       with:
-        graalvm-version: '19.3.0.java8'
+        graalvm-version: '20.0.0.java11'
     - run: java -version
     - run: mvn -v
     - run: mvn clean install -Dnative -Dquarkus.native.container-build=true
