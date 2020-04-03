@@ -12,7 +12,7 @@ public class GreetingTest
     @Test
     public void testJaxrs() {
         RestAssured.when().get("/hello").then()
-                .contentType("text/plain")
-                .body(equalTo("hello jaxrs"));
+                .contentType("application/json")
+                .body("greeting", equalTo("Hello"));
     }
 }
