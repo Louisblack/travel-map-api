@@ -25,6 +25,7 @@
         Environment:
           Variables:
             DISABLE_SIGNAL_HANDLERS: true
+            COGNITO_USER_POOL_ID: !Ref CognitoUserPool
         Events:
           GetResource:
             Type: Api
