@@ -6,6 +6,11 @@
       EndpointConfiguration: REGIONAL
       BinaryMediaTypes:
         - "*/*"
+      Cors:
+        AllowMethods: "'*'"
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+        AllowCredentials: "'true'"
 
   Resources:
     TravelMapApiNativeFunction:
@@ -20,13 +25,42 @@
         Environment:
           Variables:
             DISABLE_SIGNAL_HANDLERS: true
+            COGNITO_USER_POOL_ID: !Ref CognitoUserPool
         Events:
           GetResource:
             Type: Api
             Properties:
               Path: /{proxy+}
               Method: any
-
+    CognitoUserPool:
+      Type: "AWS::Cognito::UserPool"
+      Properties:
+        MfaConfiguration: "OFF"
+        UserPoolName: travel-map-user-pool
+        UsernameAttributes:
+          - email
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 6
+            RequireLowercase: False
+            RequireNumbers: True
+            RequireSymbols: False
+            RequireUppercase: True
+    CognitoUserPoolClient:
+      Type: "AWS::Cognito::UserPoolClient"
+      Properties:
+        ClientName: travel-map-web-client
+        GenerateSecret: False
+        UserPoolId:
+          Ref: CognitoUserPool
+    IdentityPool:
+      Type: "AWS::Cognito::IdentityPool"
+      Properties:
+        IdentityPoolName: travel-map-identity-pool
+        AllowUnauthenticatedIdentities: true
+        CognitoIdentityProviders:
+          - ClientId: !Ref CognitoUserPoolClient
+            ProviderName: !GetAtt CognitoUserPool.ProviderName
   Outputs:
     TravelMapApiNativeApi:
       Description: URL for application
