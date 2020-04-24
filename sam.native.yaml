@@ -6,11 +6,6 @@
       EndpointConfiguration: REGIONAL
       BinaryMediaTypes:
         - "*/*"
-      Cors:
-        AllowMethods: "'*'"
-        AllowHeaders: "'*'"
-        AllowOrigin: "'*'"
-        AllowCredentials: "'true'"
 
   Resources:
     TravelMapApiNativeFunction:
