@@ -19,7 +19,8 @@ jobs:
         graalvm-version: '20.0.0.java11'
     - run: java -version
     - run: mvn -v
-    - run: mvn clean install -Dnative -Dquarkus.native.container-build=true
+    - run: mvn clean verify
+    - run: mvn clean package -Dnative -Dquarkus.native.container-build=true -DskipTests
     - uses: louisblack/cloudformation-deploy-action@master
       env:
         TEMPLATE: './sam.native.yaml'
