@@ -15,7 +15,11 @@
         Runtime: provided
         CodeUri: target/function.zip
         MemorySize: 128
-        Policies: AWSLambdaBasicExecutionRole
+        Policies:
+          - AWSLambdaBasicExecutionRole
+          - DynamoDBCrudPolicy:
+              TableName:
+                !Ref TravelMapTable
         Timeout: 15
         Environment:
           Variables:
@@ -56,6 +60,40 @@
         CognitoIdentityProviders:
           - ClientId: !Ref CognitoUserPoolClient
             ProviderName: !GetAtt CognitoUserPool.ProviderName
+    TravelMapTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: "travel-map"
+        AttributeDefinitions:
+          - AttributeName: "PK"
+            AttributeType: "S"
+          - AttributeName: "SK"
+            AttributeType: "S"
+          - AttributeName: "Data"
+            AttributeType: "S"
+        BillingMode: "PAY_PER_REQUEST"
+        KeySchema:
+          - KeyType: "HASH"
+            AttributeName: "SK"
+          - KeyType: "RANGE"
+            AttributeName: "Data"
+        GlobalSecondaryIndexes:
+          - IndexName: "reverse"
+            Projection:
+              ProjectionType: "ALL"
+            KeySchema:
+              - KeyType: "HASH"
+                AttributeName: "SK"
+              - KeyType: "RANGE"
+                AttributeName: "PK"
+          - IndexName: "data"
+            Projection:
+              ProjectionType: "ALL"
+            KeySchema:
+              - KeyType: "HASH"
+                AttributeName: "SK"
+              - KeyType: "RANGE"
+                AttributeName: "Data"
   Outputs:
     TravelMapApiNativeApi:
       Description: URL for application

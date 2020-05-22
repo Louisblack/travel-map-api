@@ -1,0 +1,62 @@
+{
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "PK",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "SK",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "Data",
+      "AttributeType": "S"
+    }
+  ],
+  "BillingMode": "PAY_PER_REQUEST",
+  "TableName": "travel-map",
+  "KeySchema": [
+    {
+      "KeyType": "HASH",
+      "AttributeName": "PK"
+    },
+    {
+      "KeyType": "RANGE",
+      "AttributeName": "SK"
+    }
+  ],
+  "GlobalSecondaryIndexes": [
+    {
+      "IndexName": "reverse",
+      "Projection": {
+        "ProjectionType": "ALL"
+      },
+      "KeySchema": [
+        {
+          "KeyType": "HASH",
+          "AttributeName": "SK"
+        },
+        {
+          "KeyType": "RANGE",
+          "AttributeName": "PK"
+        }
+      ]
+    },
+    {
+      "IndexName": "data",
+      "Projection": {
+        "ProjectionType": "ALL"
+      },
+      "KeySchema": [
+        {
+          "KeyType": "HASH",
+          "AttributeName": "SK"
+        },
+        {
+          "KeyType": "RANGE",
+          "AttributeName": "Data"
+        }
+      ]
+    }
+  ]
+}
