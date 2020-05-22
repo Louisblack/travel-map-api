@@ -24,7 +24,7 @@ jobs:
         AWS_REGION: 'eu-west-1'
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    - run: mvn clean package -Dnative -Dquarkus.native.container-build=true -DskipTests
+    - run: mvn clean install -Dnative -Dquarkus.native.container-build=true -DskipTests
     - uses: louisblack/cloudformation-deploy-action@master
       env:
         TEMPLATE: './sam.native.yaml'
