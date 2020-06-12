@@ -24,6 +24,7 @@ public class PinResourceIT {
 
     @Inject
     DynamoDbClient client;
+
     private final CreateTableRequest createTableRequest;
 
     public PinResourceIT() throws IOException {

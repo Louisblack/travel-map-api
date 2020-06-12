@@ -1,20 +1,14 @@
 package com.louishoughton;
 
 import com.google.common.collect.ImmutableMap;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import software.amazon.awssdk.services.dynamodb.DynamoDbClientBuilder;
 import software.amazon.awssdk.services.dynamodb.model.*;
-import software.amazon.awssdk.utils.StringUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,21 +20,8 @@ public class PinDAO {
 
     private static final Logger LOG = LoggerFactory.getLogger(PinDAO.class);
 
+    @Inject
     DynamoDbClient client;
-
-    @ConfigProperty(name = "quarkus.dynamodb.endpoint-override", defaultValue = "")
-    String dynamoEndpoint;
-
-    public PinDAO() throws URISyntaxException {
-        DynamoDbClientBuilder dynamoDbClientBuilder = DynamoDbClient.builder()
-                .region(Region.EU_WEST_1)
-                .httpClient(UrlConnectionHttpClient.builder().build());
-        if (StringUtils.isNotBlank(dynamoEndpoint)) {
-            dynamoDbClientBuilder.endpointOverride(new URI(dynamoEndpoint));
-        }
-        client = dynamoDbClientBuilder
-                .build();
-    }
 
     public Pin save(Pin pin) {
         String pk = "PIN_" + UUID.randomUUID();
